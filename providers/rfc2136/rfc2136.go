@@ -25,8 +25,8 @@ func (RFC2136) CaddyModule() caddy.ModuleInfo {
 // DNSClientConfig enables customizing DNS clients via JSON.
 type DNSClientConfig struct {
 	// 
-	SequenceInterval time.Duration `json:"sequence_interval,omitempty"`
-	DNSTimeout time.Duration `json:"dns_timeout,omitempty"`
+	SequenceInterval caddy.Duration `json:"sequence_interval,omitempty"`
+	DNSTimeout caddy.Duration `json:"dns_timeout,omitempty"`
 }
 
 // rfc2136 configures a solver for the ACME DNS challenge.
@@ -58,10 +58,10 @@ func (wrapper RFC2136) NewDNSProvider() (challenge.Provider, error) {
 		cfg.TSIGSecret = wrapper.TSIGSecret
 	}
 	if wrapper.DNSClient.SequenceInterval != 0 {
-		cfg.SequenceInterval = wrapper.DNSClient.SequenceInterval
+		cfg.SequenceInterval = time.Duration(wrapper.DNSClient.SequenceInterval)
 	}
 	if wrapper.DNSClient.DNSTimeout != 0 {
-		cfg.DNSTimeout = wrapper.DNSClient.DNSTimeout
+		cfg.DNSTimeout = time.Duration(wrapper.DNSClient.DNSTimeout)
 	}
 	if wrapper.CommonConfig.TTL != 0 {
 		cfg.TTL = wrapper.CommonConfig.TTL
